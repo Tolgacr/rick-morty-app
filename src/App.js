@@ -1,27 +1,28 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Pagination from "./Pagination";
+import "./App.css";
 
-// Ana uygulama bileşeni
+// Uygulama ana bileşeni
 function App() {
-  // Karakter verileri ve filtreler için state'ler
+  // State'ler
   const [characters, setCharacters] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filtreleme için inputlar
+  // Filtreler
   const [nameFilter, setNameFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [genderFilter, setGenderFilter] = useState("");
 
-  // Sayfalama ayarları
+  // Sayfa ayarları
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
 
-  // Seçili karakterin detayları
+  // Seçili karakter
   const [selectedCharacter, setSelectedCharacter] = useState(null);
 
-  // API'den karakterleri çekiyoruz
+  // Karakterleri API'den çek
   useEffect(() => {
     const fetchCharacters = async () => {
       try {
@@ -45,7 +46,7 @@ function App() {
     fetchCharacters();
   }, []);
 
-  // Filtreler değişince karakter listesini güncelliyoruz
+  // Filtreleri uygula
   useEffect(() => {
     const result = characters.filter((char) =>
       char.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
@@ -56,7 +57,7 @@ function App() {
     setCurrentPage(1);
   }, [characters, nameFilter, statusFilter, genderFilter]);
 
-  // Sayfa sayısını ve gösterilecek karakterleri hesaplıyoruz
+  // Sayfa hesaplamaları
   const totalPages = Math.ceil(filtered.length / pageSize);
   const paginated = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
@@ -67,8 +68,8 @@ function App() {
     <div style={{ padding: "20px" }}>
       <h1>Rick and Morty Characters</h1>
 
-      {/* Filtreleme alanı */}
-      <div style={{ marginBottom: "10px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+      {/* Filtre alanı */}
+      <div className="filters">
         <input
           placeholder="Search by name"
           value={nameFilter}
@@ -87,17 +88,22 @@ function App() {
           <option value="Genderless">Genderless</option>
           <option value="unknown">Unknown</option>
         </select>
-        <select value={pageSize} onChange={(e) => {
-          setPageSize(Number(e.target.value));
-          setCurrentPage(1);
-        }}>
-          <option value={10}>10</option>
-          <option value={25}>25</option>
-          <option value={50}>50</option>
+        <select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+            setCurrentPage(1);
+          }}
+        >
+          {[...Array(10)].map((_, i) => (
+            <option key={i} value={(i + 1) * 5}>
+              {(i + 1) * 5}
+            </option>
+          ))}
         </select>
       </div>
 
-      {/* Karakter tablosu */}
+      {/* Tablo */}
       {paginated.length === 0 ? (
         <p>No characters match your filters.</p>
       ) : (
@@ -113,50 +119,78 @@ function App() {
             </thead>
             <tbody>
               {paginated.map((char) => (
-                <tr key={char.id}>
-                  <td
-                    style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
-                    onClick={() => {
-                      // Karaktere tıklayınca detay kartı aç/kapat
-                      setSelectedCharacter((prev) => prev?.id === char.id ? null : char);
-                    }}
-                  >
-                    {char.name}
-                  </td>
-                  <td>{char.status}</td>
-                  <td>{char.species}</td>
-                  <td>{char.gender}</td>
-                </tr>
+                <React.Fragment key={char.id}>
+                  <tr>
+                    {/* İsme tıkla, detay aç/kapat */}
+                    <td
+                      style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() =>
+                        setSelectedCharacter((prev) => prev?.id === char.id ? null : char)
+                      }
+                    >
+                      {char.name}
+                    </td>
+                    <td>{char.status}</td>
+                    <td>{char.species}</td>
+                    <td>{char.gender}</td>
+                  </tr>
+
+                  {/* Seçili karakterin detayları */}
+                  {selectedCharacter?.id === char.id && (
+                    <tr>
+                      <td colSpan="4">
+                        <div
+                          style={{
+                            marginTop: "10px",
+                            border: "1px solid #ccc",
+                            padding: "15px",
+                            borderRadius: "6px",
+                            display: "flex",
+                            gap: "20px",
+                            alignItems: "center",
+                          }}
+                        >
+                          <img
+                            src={char.image}
+                            alt={char.name}
+                            width="120"
+                            height="120"
+                            style={{ borderRadius: "8px" }}
+                          />
+                          <div>
+                            <h2>{char.name}</h2>
+                            <p>
+                              <strong>Status:</strong> {char.status}
+                            </p>
+                            <p>
+                              <strong>Species:</strong> {char.species}
+                            </p>
+                            <p>
+                              <strong>Gender:</strong> {char.gender}
+                            </p>
+                            <p>
+                              <strong>Location:</strong> {char.location.name}
+                            </p>
+                            <p>
+                              <strong>Origin:</strong> {char.origin.name}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               ))}
             </tbody>
           </table>
 
-          {/* Sayfalama butonları */}
-          <div style={{ marginTop: "10px" }}>
-            <button onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1}>
-              Previous
-            </button>
-            <span style={{ margin: "0 10px" }}>{currentPage} / {totalPages}</span>
-            <button onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>
-              Next
-            </button>
-          </div>
+          {/* Sayfalama */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </>
-      )}
-
-      {/* Karakter detay kartı */}
-      {selectedCharacter && (
-        <div style={{ marginTop: "30px", border: "1px solid #ccc", padding: "15px", borderRadius: "6px", display: "flex", gap: "20px", alignItems: "center" }}>
-          <img src={selectedCharacter.image} alt={selectedCharacter.name} width="150" height="150" style={{ borderRadius: "8px" }} />
-          <div>
-            <h2>{selectedCharacter.name}</h2>
-            <p><strong>Status:</strong> {selectedCharacter.status}</p>
-            <p><strong>Species:</strong> {selectedCharacter.species}</p>
-            <p><strong>Gender:</strong> {selectedCharacter.gender}</p>
-            <p><strong>Location:</strong> {selectedCharacter.location.name}</p>
-            <p><strong>Origin:</strong> {selectedCharacter.origin.name}</p>
-          </div>
-        </div>
       )}
     </div>
   );

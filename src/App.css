@@ -1,4 +1,4 @@
-/* Genel body ayarları ve arka plan görseli */
+/* Arka plan ve temel yazı tipi */
 body {
   font-family: 'Orbitron', sans-serif;
   background: url('/bg.jpg') no-repeat top center scroll;
@@ -9,7 +9,7 @@ body {
   min-height: 100vh;
 }
 
-/* Başlık stilleri */
+/* Başlık */
 h1 {
   text-align: center;
   color: #00ff9c;
@@ -18,7 +18,7 @@ h1 {
   font-size: 32px;
 }
 
-/* Ana içerik kutusu */
+/* İçerik kutusu */
 .container {
   max-width: 1000px;
   margin: auto;
@@ -37,7 +37,7 @@ h1 {
   justify-content: center;
 }
 
-/* Filtre input ve select kutuları */
+/* Filtre input ve select */
 .filters input,
 .filters select {
   background-color: #101318;
@@ -49,25 +49,27 @@ h1 {
   transition: 0.2s ease;
 }
 
-/* Filtre kutularına odaklanınca */
+/* Filtre odak efekti */
 .filters input:focus,
 .filters select:focus {
   box-shadow: 0 0 5px #00ffcc;
 }
 
-/* Tablo stilleri */
+/* Tablo */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-  background-color: #161b22;
+  background-color: rgba(22, 27, 34, 0.7);
 }
 
+/* Tablo hücreleri */
 table th,
 table td {
   padding: 12px;
   border: 1px solid #00ffcc33;
   text-align: left;
+  background-color: transparent;
 }
 
 /* Tablo başlıkları */
@@ -76,12 +78,12 @@ table th {
   color: #66ffcc;
 }
 
-/* Tablo satırı üzerine gelince */
+/* Satır hover */
 table tr:hover {
   background-color: #222831;
 }
 
-/* Tablo ilk sütun (isimler) */
+/* İlk sütun (isimler) */
 table td:first-child {
   color: #00ffcc;
   cursor: pointer;
@@ -89,28 +91,36 @@ table td:first-child {
 }
 
 /* Sayfalama alanı */
-.pagination {
+.pagination-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 15px;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 20px;
 }
 
 /* Sayfalama butonları */
-.pagination button {
-  background: #00ffcc;
+.pagination-btn {
+  background-color: #00ffcc;
   color: #000;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
+  padding: 10px 18px;
+  border-radius: 10px;
   font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.pagination button:disabled {
-  opacity: 0.5;
+/* Aktif sayfa */
+.pagination-btn.active {
+  background-color: #007f66;
+  color: white;
+}
+
+/* Pasif buton */
+.pagination-btn:disabled {
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 /* Detay kartı */
@@ -125,7 +135,7 @@ table td:first-child {
   box-shadow: 0 0 12px #00ffcc33;
 }
 
-/* Detay kartı görseli */
+/* Detay görseli */
 .detail-card img {
   border-radius: 8px;
   box-shadow: 0 0 10px #00ffccaa;
