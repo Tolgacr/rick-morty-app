@@ -1,3 +1,4 @@
+/* Genel body ayarları ve arka plan görseli */
 body {
   font-family: 'Orbitron', sans-serif;
   background: url('/bg.jpg') no-repeat top center scroll;
@@ -8,6 +9,7 @@ body {
   min-height: 100vh;
 }
 
+/* Başlık stilleri */
 h1 {
   text-align: center;
   color: #00ff9c;
@@ -16,6 +18,7 @@ h1 {
   font-size: 32px;
 }
 
+/* Ana içerik kutusu */
 .container {
   max-width: 1000px;
   margin: auto;
@@ -25,6 +28,7 @@ h1 {
   box-shadow: 0 0 20px #00ffcc55;
 }
 
+/* Filtre alanı */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -33,6 +37,7 @@ h1 {
   justify-content: center;
 }
 
+/* Filtre input ve select kutuları */
 .filters input,
 .filters select {
   background-color: #101318;
@@ -44,11 +49,13 @@ h1 {
   transition: 0.2s ease;
 }
 
+/* Filtre kutularına odaklanınca */
 .filters input:focus,
 .filters select:focus {
   box-shadow: 0 0 5px #00ffcc;
 }
 
+/* Tablo stilleri */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -63,21 +70,25 @@ table td {
   text-align: left;
 }
 
+/* Tablo başlıkları */
 table th {
   background-color: #101318;
   color: #66ffcc;
 }
 
+/* Tablo satırı üzerine gelince */
 table tr:hover {
   background-color: #222831;
 }
 
+/* Tablo ilk sütun (isimler) */
 table td:first-child {
   color: #00ffcc;
   cursor: pointer;
   text-decoration: underline;
 }
 
+/* Sayfalama alanı */
 .pagination {
   display: flex;
   justify-content: center;
@@ -86,6 +97,7 @@ table td:first-child {
   margin-top: 20px;
 }
 
+/* Sayfalama butonları */
 .pagination button {
   background: #00ffcc;
   color: #000;
@@ -101,6 +113,7 @@ table td:first-child {
   cursor: not-allowed;
 }
 
+/* Detay kartı */
 .detail-card {
   display: flex;
   gap: 20px;
@@ -112,6 +125,7 @@ table td:first-child {
   box-shadow: 0 0 12px #00ffcc33;
 }
 
+/* Detay kartı görseli */
 .detail-card img {
   border-radius: 8px;
   box-shadow: 0 0 10px #00ffccaa;

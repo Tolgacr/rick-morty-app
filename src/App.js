@@ -2,20 +2,26 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+// Ana uygulama bileşeni
 function App() {
+  // Karakter verileri ve filtreler için state'ler
   const [characters, setCharacters] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Filtreleme için inputlar
   const [nameFilter, setNameFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [genderFilter, setGenderFilter] = useState("");
 
+  // Sayfalama ayarları
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
 
+  // Seçili karakterin detayları
   const [selectedCharacter, setSelectedCharacter] = useState(null);
 
+  // API'den karakterleri çekiyoruz
   useEffect(() => {
     const fetchCharacters = async () => {
       try {
@@ -39,6 +45,7 @@ function App() {
     fetchCharacters();
   }, []);
 
+  // Filtreler değişince karakter listesini güncelliyoruz
   useEffect(() => {
     const result = characters.filter((char) =>
       char.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
@@ -49,16 +56,18 @@ function App() {
     setCurrentPage(1);
   }, [characters, nameFilter, statusFilter, genderFilter]);
 
+  // Sayfa sayısını ve gösterilecek karakterleri hesaplıyoruz
   const totalPages = Math.ceil(filtered.length / pageSize);
   const paginated = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
+  // Yükleniyor ekranı
   if (loading) return <div>Loading...</div>;
 
   return (
     <div style={{ padding: "20px" }}>
       <h1>Rick and Morty Characters</h1>
 
-      {/* Filtreleme */}
+      {/* Filtreleme alanı */}
       <div style={{ marginBottom: "10px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
         <input
           placeholder="Search by name"
@@ -88,7 +97,7 @@ function App() {
         </select>
       </div>
 
-      {/* Tablo */}
+      {/* Karakter tablosu */}
       {paginated.length === 0 ? (
         <p>No characters match your filters.</p>
       ) : (
@@ -108,7 +117,7 @@ function App() {
                   <td
                     style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
                     onClick={() => {
-                      console.log("Tıklanan karakter:", char);
+                      // Karaktere tıklayınca detay kartı aç/kapat
                       setSelectedCharacter((prev) => prev?.id === char.id ? null : char);
                     }}
                   >
@@ -122,7 +131,7 @@ function App() {
             </tbody>
           </table>
 
-          {/* Sayfalama */}
+          {/* Sayfalama butonları */}
           <div style={{ marginTop: "10px" }}>
             <button onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1}>
               Previous
@@ -135,7 +144,7 @@ function App() {
         </>
       )}
 
-      {/* Detay Kartı */}
+      {/* Karakter detay kartı */}
       {selectedCharacter && (
         <div style={{ marginTop: "30px", border: "1px solid #ccc", padding: "15px", borderRadius: "6px", display: "flex", gap: "20px", alignItems: "center" }}>
           <img src={selectedCharacter.image} alt={selectedCharacter.name} width="150" height="150" style={{ borderRadius: "8px" }} />
